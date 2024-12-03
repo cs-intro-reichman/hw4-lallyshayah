@@ -112,11 +112,9 @@ public class ArrCharOps {
             newArr[i] = arr1[i]; 
         }
 
-        for (int i = arr1.length; i < arr1.length + arr2.length; i++)
+        for (int i = 0; i < arr2.length; i++)
         {
-            int j = 0;
-            newArr[i] = arr2[j]; 
-            j++;
+            newArr[arr1.length + i] = arr2[i]; 
         }
 
         return newArr;
@@ -129,12 +127,15 @@ public class ArrCharOps {
      *  characters containing the characters "urge".
      */     
     public static char[] subArray(char[] arr, int beginIndex, int endIndex) {
+       
+        if (beginIndex < 0 || endIndex > arr.length || beginIndex >= endIndex)
+        throw new IllegalArgumentException("Invalid indices");
+        
         char [] subArr = new char [endIndex - beginIndex];
+
         for (int i = beginIndex; i < endIndex; i++)
         {
-            int j = 0;
-            subArr[j] = arr[i];
-            j++;
+            subArr[i - beginIndex] = arr[i];
         }
 
         return subArr;
@@ -148,15 +149,15 @@ public class ArrCharOps {
      *  The hash value of an empty array is zero.
      */
     public static long hashCode(char[] arr) {
+        if (arr.length == 0)
+        return 0;
+        
         long sumHashCode = 0;
 
         for (int i = 0; i < arr.length; i++)
         {
-            int j = 1;
-            sumHashCode += (long) arr[i] * Math.pow(7, arr.length - j);
-            j++;
+            sumHashCode += arr[i] * Math.pow(7, arr.length - i - 1);
         }
-
         return sumHashCode;
     }
 
@@ -188,29 +189,26 @@ public class ArrCharOps {
     public static int compareTo(String str1, String str2) {
         int untilIndex = 0;
 
-        if (str1 == null || str2 == null)
+        if (str1 == "" || str2 == "")
         return -2;
 
+        if (str1.length() < str2.length())
+        return -1;
+
         if (str1.length() > str2.length())
-        {
-            untilIndex = str2.length();
-        }
+        return 1;
 
-        else if (str1.length() <= str2.length())
-        {
-            untilIndex = str1.length();
-        }
+        int minLength = Math.min(str1.length(), str2.length());
 
-        for (int i = 0; i < untilIndex; i++)
+        for (int i = 0; i < minLength; i++)
         {
             if (str1.charAt(i) > str2.charAt(i))
             return 1;
 
-            if (str1.charAt(i) < str2.charAt(i))
+            if (str2.charAt(i) > str1.charAt(i))
             return -1;
         }
 
         return 0;
-
     }
 }
